@@ -46,3 +46,57 @@ test('stats render correctly', () => {
   likesText = likesCounter.children[0];
   expect(likesText).toBe('124');
 });
+
+test('stats render dislikes correctly', () => {
+  let stats = {
+    likes: 123,
+    replies: 234,
+    retuits: 345,
+    dislikes: 57
+  }
+
+  const likeTuit = () => {
+    act(() => {
+      stats.likes++;
+      tuitStats.update(
+        <TuitStats
+          tuit={{stats: stats}}
+          likeTuit={() => {}}
+          dislikeTuit={() => {}}
+        />)
+    })
+  }
+
+  const dislikeTuit = () => {
+    act(() => {
+      stats.dislikes++;
+      tuitStats.update(
+        <TuitStats
+          tuit={{stats: stats}}
+          likeTuit={() => {}}
+          dislikeTuit={() => {}}
+        />)
+    })
+  }
+
+  let tuitStats
+  act(() => {
+    tuitStats = create(
+      <TuitStats
+        likeTuit={likeTuit}
+        dislikeTuit={dislikeTuit}
+        tuit={{stats: stats}}/>
+    );
+  })
+
+  let root = tuitStats.root;
+  const dislikesCounter = root.findByProps({className: 'ttr-stats-dislikes'})
+  const dislikeTuitButton = root.findByProps({className: 'ttr-dislike-tuit-click'});
+
+  let dislikesText = dislikesCounter.children[0];
+  expect(dislikesText).toBe('57');
+
+  act(() => {dislikeTuitButton.props.onClick()})
+  dislikesText = dislikesCounter.children[0];
+  expect(dislikesText).toBe('58');
+});
