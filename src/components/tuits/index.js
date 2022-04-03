@@ -16,7 +16,8 @@ function Tuits({tuits = [], deleteTuit, refreshTuits}) {
         {
           tuits.map && tuits.map(tuit => {
             return (
-              <Tuit key={tuit._id}
+              <Tuit className="the-tuit"
+                    key={tuit._id}
                     deleteTuit={deleteTuit}
                     likeTuit={likeTuit}
                     dislikeTuit={dislikeTuit}
